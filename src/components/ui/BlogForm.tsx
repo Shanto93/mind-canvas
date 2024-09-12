@@ -1,6 +1,9 @@
 "use client";
 
+import createBlog from "@/actions/createBlog";
+import { useGetBlogsQuery } from "@/redux/api/baseApi";
 import { useForm } from "react-hook-form";
+import { json } from "stream/consumers";
 
 type FormValues = {
   id: string;
@@ -13,6 +16,8 @@ type FormValues = {
 };
 
 const CreateBlogForm = () => {
+  const { data: blogs, isLoading } = useGetBlogsQuery("");
+
   const {
     register,
     handleSubmit,
@@ -20,7 +25,16 @@ const CreateBlogForm = () => {
   } = useForm<FormValues>();
 
   const onSubmit = async (data: FormValues) => {
-    console.log(data);
+    data.id = JSON.stringify(blogs.length + 1);
+    data.total_likes = "100";
+    // console.log(data);
+    try {
+      const res = await createBlog(data);
+      console.log(res);
+    } catch (error: any) {
+      console.log(error.message);
+      throw new Error(error.message);
+    }
   };
 
   return (
