@@ -5,7 +5,7 @@ import LatestBlogCard from "../ui/LatestBlogCard";
 
 const LatestBlogs = async ({ blogs }: { blogs: IBlog[] }) => {
   return (
-    <div>
+    <div className="w-[90%] mx-auto">
       <div className="my-10">
         <h2 className="text-3xl font-semibold text-center">MindCanvas</h2>
         <p className="text-center w-2/4 mx-auto mt-3">
@@ -13,9 +13,14 @@ const LatestBlogs = async ({ blogs }: { blogs: IBlog[] }) => {
           ut, suscipit aliquam natus autem odit delectus
         </p>
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        {blogs.map((blog) => (
+      <div className="grid grid-cols-2 gap-8">
+        {blogs.slice(0, 2).map((blog) => (
           <LatestBlogCard key={blog.id} blog={blog}></LatestBlogCard>
+        ))}
+      </div>
+      <div className="grid grid-cols-3 gap-8 my-10">
+        {blogs.slice(2, 5).map((blog) => (
+          <BlogCard key={blog.id} blog={blog}></BlogCard>
         ))}
       </div>
     </div>
