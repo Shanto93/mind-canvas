@@ -1,12 +1,22 @@
+"use client";
+
 import BlogCard from "@/components/ui/BlogCard";
+import { useGetBlogsQuery } from "@/redux/api/baseApi";
 import type { IBlog } from "@/types/indes";
 import React from "react";
+import LoadingPage from "../loading";
 
-const page = async () => {
-  const res = await fetch("http://localhost:5000/blogs", {
-    cache: "no-store",
-  });
-  const blogs = await res.json();
+const Blogs = () => {
+  const { data: blogs, isLoading } = useGetBlogsQuery("");
+  if (isLoading) {
+    return <LoadingPage></LoadingPage>;
+  }
+
+  // const res = await fetch("http://localhost:5000/blogs", {
+  //   cache: "no-store",
+  // });
+  // const blogs = await res.json();
+
   return (
     <div>
       <div className="w-[90%] mx-auto">
@@ -18,7 +28,7 @@ const page = async () => {
           </p>
         </div>
         <div className="grid grid-cols-3 gap-8 my-10">
-          {blogs.map((blog: IBlog) => (
+          {blogs?.map((blog: IBlog) => (
             <BlogCard key={blog.id} blog={blog}></BlogCard>
           ))}
         </div>
@@ -27,4 +37,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default Blogs;
